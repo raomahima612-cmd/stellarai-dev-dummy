@@ -1,0 +1,18 @@
+name: Trigger QA Azure Pipeline
+
+on:
+  push:
+    branches: [ main, master ]
+
+jobs:
+  trigger-azure-pipeline:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Trigger Azure DevOps QA Pipeline
+        run: |
+          curl -u ":${{ secrets.AZURE_DEVOPS_PAT }}" \
+          -X POST \
+          -H "Content-Type: application/json" \
+          -d '{"resources": {"repositories": {"self": {"refName": "refs/heads/main"}}}}' \
+          "https://dev.azure.com/YOUR_ORG/YOUR_PROJECT/_apis/pipelines/YOUR_PIPELINE_ID/runs?api-version=7.1-preview.1"
