@@ -9,10 +9,22 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-      - name: Trigger Azure QA Pipeline
+      - name: Trigger Azure DevOps QA Pipeline
         run: |
-          curl -s -u ":${{ secrets.AZURE_DEVOPS_PAT }}" \
-          -X POST \
-          -H "Content-Type: application/json" \
-          -d "{}" \
-          "https://dev.azure.com/Kshitija0716/StellarAI-Automation/_apis/pipelines/10/runs?api-version=7.1"
+          echo "Triggering Azure DevOps pipeline..."
+
+          response=$(curl -s -w "\nHTTP_STATUS:%{http_code}" \
+            -u ":${{ secrets.AZURE_DEVOPS_PAT }}" \
+            -X POST \
+            -H "Content-Type: application/json" \
+            -d "{}" \
+            "https://dev.azure.com/Kshitija0716/StellarAI-Automation/_apis/pipelines/3/runs?api-version=7.1")
+
+          echo "$response"
+
+          status=$(echo "$response" | grep HTTP_STATUS | cut -d':' -f2)
+
+          if [ "$status" != "200" ] && [ "$status" != "201" ]; then
+            echo "Azure pipeline trigger failed with status $status"
+            exit 1
+          fi
