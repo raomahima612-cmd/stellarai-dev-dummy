@@ -15,4 +15,4 @@ jobs:
           -X POST \
           -H "Content-Type: application/json" \
           -d '{"resources": {"repositories": {"self": {"refName": "refs/heads/main"}}}}' \
-          "https://dev.azure.com/YOUR_ORG/YOUR_PROJECT/_apis/pipelines/YOUR_PIPELINE_ID/runs?api-version=7.1-preview.1"
+          "https://dev.azure.com/Kshitija0716/StellarAI-Automation/_apis/pipelines/10/runs?api-version=7.1-preview.1"
